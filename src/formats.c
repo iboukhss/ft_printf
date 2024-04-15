@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   formats.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 08:34:10 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/13 18:51:35 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/04/13 18:44:31 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/04/13 18:44:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "../include/ft_printf.h"
 
-int	ft_printf(const char *fmt, ...)
+int	fmt_c(int fd, va_list ap)
 {
-	int	ret;
-	va_list	ap;
+	int	c;
 
-	va_start(ap, fmt);
-	ret = ft_vdprintf(STDOUT_FILENO, fmt, ap);
-	va_end(ap);
-	return (ret);
+	c = va_arg(ap, int);
+	return (ft_putchar_fd(c, fd));
+}
+
+int	fmt_s(int fd, va_list ap)
+{
+	char	*s;
+
+	s = va_arg(ap, char *);
+	return (ft_putstr_fd(s, fd));
+}
+
+int	fmt_err(int fd, va_list ap)
+{
+	(void)fd;
+	(void)ap;
+	return (-1);
 }

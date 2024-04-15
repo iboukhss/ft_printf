@@ -1,44 +1,35 @@
 NAME = libftprintf.a
 CC = clang
 CFLAGS = -Wall -Wextra -g -fsanitize=undefined
-LDFLAGS = -L.
-LDLIBS = -ltap -lftprintf
 
-SRCS = 
+SRC_DIR = src/
+SRC_FILES += ft_printf.c ft_vdprintf.c formats.c
+SRC_FILES += ft_putchar_fd.c ft_putstr_fd.c ft_strlen.c
+SRCS = $(addprefix $(SRC_DIR),$(SRC_FILES))
+
+INC_DIR = include/
+INC_FILES = ft_printf.h
+INCS = $(addprefix $(INC_DIR),$(INC_FILES))
+
 OBJS = $(SRCS:.c=.o)
-
-TEST_SRCS = 
-TEST_EXES = $(TEST_SRCS:.c=.t)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar rcs $@ $^
+	ar -rcs $@ $^
 
-libtap.a: tap.o
-	ar rcs $@ $<
-
-tap.o: tap.c tap.h
+%.o: %.c $(INCS)
 	$(CC) $(CFLAGS) -c -o $@ $<
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $<
-
-%.t: %.c libtap.a libftprintf.a
-	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(LDLIBS)
-
-tests: $(TEST_EXES)
 
 norm:
 	-norminette $(SRCS)
 
 clean:
-	rm -f *.o
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -f *.a
-	rm -f t/*.t
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all norm clean fclean re
+.PHONY: all clean fclean re

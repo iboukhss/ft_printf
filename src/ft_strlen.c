@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 08:34:10 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/13 18:51:35 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/04/12 17:35:08 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/04/12 17:37:33 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "../include/ft_printf.h"
 
-int	ft_printf(const char *fmt, ...)
+size_t	ft_strlen(const char *s)
 {
-	int	ret;
-	va_list	ap;
+	const char	*str;
 
-	va_start(ap, fmt);
-	ret = ft_vdprintf(STDOUT_FILENO, fmt, ap);
-	va_end(ap);
-	return (ret);
+	str = s;
+	while (*str)
+		++str;
+	return (str - s);
 }

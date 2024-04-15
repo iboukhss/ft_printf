@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 08:34:10 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/13 18:51:35 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/04/12 17:24:32 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/04/13 18:50:20 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "../include/ft_printf.h"
 
-int	ft_printf(const char *fmt, ...)
+int	ft_putstr_fd(const char *s, int fd)
 {
-	int	ret;
-	va_list	ap;
+	size_t	len;
+	ssize_t	wr;
 
-	va_start(ap, fmt);
-	ret = ft_vdprintf(STDOUT_FILENO, fmt, ap);
-	va_end(ap);
-	return (ret);
+	len = ft_strlen(s);
+	wr = write(fd, s, len);
+	if (wr == -1)
+		return (-1);
+	return (len);
 }
