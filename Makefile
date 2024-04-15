@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -g -fsanitize=undefined
 
 SRC_DIR = src/
 SRC_FILES += ft_printf.c ft_vdprintf.c formats.c
-SRC_FILES += ft_putchar_fd.c ft_putstr_fd.c ft_strlen.c
+SRC_FILES += ft_putchar_fd.c ft_putstr_fd.c ft_strlen.c ft_i32toa.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_FILES))
 
 INC_DIR = include/

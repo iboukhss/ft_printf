@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:34:10 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/13 18:51:35 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/16 01:01:40 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 int	ft_printf(const char *fmt, ...)
 {
-	int	ret;
 	va_list	ap;
+	int		ret;
 
 	va_start(ap, fmt);
 	ret = ft_vdprintf(STDOUT_FILENO, fmt, ap);

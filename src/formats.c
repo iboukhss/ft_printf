@@ -6,10 +6,11 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 18:44:31 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/13 18:44:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/16 00:01:13 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "../include/ft_printf.h"
 
 int	fmt_c(int fd, va_list ap)
@@ -17,7 +18,7 @@ int	fmt_c(int fd, va_list ap)
 	int	c;
 
 	c = va_arg(ap, int);
-	return (ft_putchar_fd(c, fd));
+	return (ft_putchar_fd(fd, c));
 }
 
 int	fmt_s(int fd, va_list ap)
@@ -25,7 +26,18 @@ int	fmt_s(int fd, va_list ap)
 	char	*s;
 
 	s = va_arg(ap, char *);
-	return (ft_putstr_fd(s, fd));
+	return (ft_putstr_fd(fd, s));
+}
+
+int	fmt_i(int fd, va_list ap)
+{
+	int		i;
+	char	buf[12];
+	char	*s;
+
+	i = va_arg(ap, int);
+	s = ft_i32toa(buf, sizeof(buf), i);
+	return (ft_putstr_fd(fd, s));
 }
 
 int	fmt_err(int fd, va_list ap)
@@ -33,4 +45,10 @@ int	fmt_err(int fd, va_list ap)
 	(void)fd;
 	(void)ap;
 	return (-1);
+}
+
+int	fmt_pc(int fd, va_list ap)
+{
+	(void)ap;
+	return (write(fd, "%", 1));
 }

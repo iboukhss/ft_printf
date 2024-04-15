@@ -6,13 +6,12 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/15 11:03:41 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/16 00:37:24 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-/* Initialize lookup table for the entire char range */
 t_fun_ptr	*init_table(void)
 {
 	static t_fun_ptr	lut[256];
@@ -27,12 +26,12 @@ t_fun_ptr	*init_table(void)
 	lut['c'] = &fmt_c;
 	lut['s'] = &fmt_s;
 	lut['p'] = &fmt_err;
-	lut['d'] = &fmt_err;
-	lut['i'] = &fmt_err;
+	lut['d'] = &fmt_i;
+	lut['i'] = &fmt_i;
 	lut['u'] = &fmt_err;
 	lut['x'] = &fmt_err;
 	lut['X'] = &fmt_err;
-	lut['%'] = &fmt_err;
+	lut['%'] = &fmt_pc;
 	return (lut);
 }
 
@@ -42,8 +41,8 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 	int			ret;
 	int			wr;
 
-	lut = init_table();
 	ret = 0;
+	lut = init_table();
 	while (*fmt)
 	{
 		if (*fmt == '%')
@@ -55,11 +54,11 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 		}
 		else
 		{
-			wr = ft_putchar_fd(*fmt, fd);
+			wr = ft_putchar_fd(fd, *fmt);
 			if (wr == -1)
 				return (-1);
-			ret += wr;
 		}
+		ret += wr;
 		++fmt;
 	}
 	return (ret);
