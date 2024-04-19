@@ -6,22 +6,11 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 16:45:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/19 02:02:00 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:21:39 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
-
-int	fmt_u(int fd, va_list ap)
-{
-	unsigned int	u;
-	char			buf[21];
-	char			*s;
-
-	u = va_arg(ap, unsigned int);
-	s = ft_u64toa(buf, u, sizeof(buf));
-	return (ft_putstr_fd(fd, s));
-}
 
 static size_t	count_digits_hex(uint64_t n)
 {
@@ -34,6 +23,17 @@ static size_t	count_digits_hex(uint64_t n)
 		++r;
 	}
 	return (r);
+}
+
+int	fmt_u(int fd, va_list ap)
+{
+	unsigned int	u;
+	char			buf[21];
+	char			*s;
+
+	u = va_arg(ap, unsigned int);
+	s = ft_u64toa(buf, u, sizeof(buf));
+	return (ft_putstr_fd(fd, s));
 }
 
 int	fmt_x(int fd, va_list ap)

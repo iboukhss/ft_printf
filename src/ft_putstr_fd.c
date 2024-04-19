@@ -6,23 +6,22 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:24:32 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/19 16:09:46 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:20:09 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "../include/ft_printf.h"
 
 int	ft_putstr_fd(int fd, const char *s)
 {
 	size_t	len;
-	ssize_t	wr;
+	ssize_t	wrc;
 
 	if (!s)
 		return (ft_putstr_fd(fd, "(null)"));
 	len = ft_strlen(s);
-	wr = write(fd, s, len);
-	if (wr == -1)
+	wrc = write(fd, s, len);
+	if (wrc == -1)
 		return (-1);
-	return (len);
+	return (wrc);
 }

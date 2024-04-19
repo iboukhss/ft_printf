@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/19 01:57:03 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:12:49 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 {
 	t_fun_ptr	*lut;
 	size_t		ret;
-	int			wr;
+	ssize_t		wrc;
 
 	ret = 0;
 	lut = init_table();
@@ -49,17 +49,17 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 		if (*fmt == '%')
 		{
 			++fmt;
-			wr = lut[(unsigned char)*fmt](fd, ap);
-			if (wr == -1)
+			wrc = lut[(unsigned char)*fmt](fd, ap);
+			if (wrc == -1)
 				return (-1);
 		}
 		else
 		{
-			wr = ft_putchar_fd(fd, *fmt);
-			if (wr == -1)
+			wrc = ft_putchar_fd(fd, *fmt);
+			if (wrc == -1)
 				return (-1);
 		}
-		ret += wr;
+		ret += wrc;
 		++fmt;
 	}
 	return (ret);

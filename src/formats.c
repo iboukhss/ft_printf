@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 18:44:31 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/18 23:23:32 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:25:58 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int	fmt_s(int fd, va_list ap)
 
 int	fmt_i(int fd, va_list ap)
 {
-	int32_t	i;
+	int		i;
 	char	buf[12];
 	char	*s;
 
-	i = va_arg(ap, int32_t);
+	i = va_arg(ap, int);
 	s = ft_i32toa(buf, i, sizeof(buf));
 	return (ft_putstr_fd(fd, s));
 }
@@ -49,5 +49,5 @@ int	fmt_err(int fd, va_list ap)
 int	fmt_pc(int fd, va_list ap)
 {
 	(void)ap;
-	return (ft_putchar_fd(fd, '%'));
+	return (write(fd, "%", 1));
 }

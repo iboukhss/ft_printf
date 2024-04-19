@@ -6,15 +6,15 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:40:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/18 23:40:13 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:19:38 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+# include <unistd.h>
 # include <stdarg.h>
-# include <stddef.h>
 # include <stdint.h>
 
 typedef int	(*t_fun_ptr)(int, va_list);

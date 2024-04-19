@@ -6,11 +6,10 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:34:10 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/16 01:01:40 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:19:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "../include/ft_printf.h"
 
 int	ft_printf(const char *fmt, ...)
