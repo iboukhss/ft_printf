@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   formats.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 17:24:32 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/04/19 16:09:46 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/04/17 16:39:21 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/04/19 01:56:46 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "../include/ft_printf.h"
+#ifndef FORMATS_H
+# define FORMATS_H
 
-int	ft_putstr_fd(int fd, const char *s)
-{
-	size_t	len;
-	ssize_t	wr;
+# include <stdarg.h>
 
-	if (!s)
-		return (ft_putstr_fd(fd, "(null)"));
-	len = ft_strlen(s);
-	wr = write(fd, s, len);
-	if (wr == -1)
-		return (-1);
-	return (len);
-}
+/* Print format handlers */
+int	fmt_c(int fd, va_list ap);
+int	fmt_s(int fd, va_list ap);
+int	fmt_i(int fd, va_list ap);
+int	fmt_err(int fd, va_list ap);
+int	fmt_pc(int fd, va_list ap);
+int	fmt_u(int fd, va_list ap);
+int	fmt_x(int fd, va_list ap);
+int	fmt_xx(int fd, va_list ap);
+int	fmt_p(int fd, va_list ap);
+
+#endif

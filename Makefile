@@ -1,10 +1,10 @@
 NAME = libftprintf.a
 CC = clang
-CFLAGS = -Wall -Wextra -g -fsanitize=undefined
+CFLAGS = -Wall -Wextra -g
 
 SRC_DIR = src/
-SRC_FILES += ft_printf.c ft_vdprintf.c formats.c
-SRC_FILES += ft_putchar_fd.c ft_putstr_fd.c ft_strlen.c ft_i32toa.c
+SRC_FILES += ft_printf.c ft_vdprintf.c formats.c formats_extra.c
+SRC_FILES += ft_putchar_fd.c ft_putstr_fd.c ft_strlen.c ft_i32toa.c ft_u64toa.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_FILES))
 
 INC_DIR = include/
