@@ -11,3 +11,5 @@ It is actually pretty cool :)
 ## Useful ressources
 
 - https://git.musl-libc.org/cgit/musl/tree/src/stdio/vfprintf.c
+- https://www.lix.polytechnique.fr/~liberti/public/computing/prog/c/C/FUNCTIONS/format.html
+- https://nullprogram.com/blog/2023/02/13/
