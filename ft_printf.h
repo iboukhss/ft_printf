@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:40:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/01 21:55:15 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/02 00:53:04 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,12 @@ typedef struct s_format
 
 int	ft_printf(const char *fmt, ...);
 int	ft_vdprintf(int fd, const char *fmt, va_list ap);
+
+int	write_chr(int fd, va_list ap);
+int	write_str(int fd, va_list ap);
+int	write_ptr(int fd, va_list ap);
+int	write_int(int fd, va_list ap);
+int	write_uint_base(int fd, va_list ap, int base);
+int	write_hex(int fd, va_list ap);
 
 #endif

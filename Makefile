@@ -1,16 +1,12 @@
 NAME = libftprintf.a
 CC = clang
-CFLAGS = -Wall -Wextra -g -Iinclude
+CFLAGS = -Wall -Wextra -g
 LDFLAGS = -L.
 LDLIBS = -ltap -lftprintf
 
 # Main sources
-SRC_DIR = src/
-SRC_FILES += ft_printf.c ft_vdprintf.c buffer_utils.c
-SRC_FILES += ft_strlen.c ft_itoa.c ft_utoa.c
-SRCS = $(addprefix $(SRC_DIR),$(SRC_FILES))
+SRCS = ft_printf.c ft_vdprintf.c
 OBJS = $(SRCS:.c=.o)
-INCS = include/ft_printf.h src/buffer_utils.h
 
 # Test sources
 TEST_SRCS = t/ft_printf.c
@@ -21,7 +17,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	ar -rcs $@ $^
 
-%.o: %.c $(INCS)
+%.o: %.c ft_printf.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 test: $(TEST_EXES)
