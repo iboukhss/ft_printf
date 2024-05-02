@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/02 01:15:26 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/02 02:16:46 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,68 +38,76 @@ void	*ft_memset(void *ptr, int c, size_t n)
 	return (ptr);
 }
 
+const char	*parse_format(const char **fmt, t_format *data)
+{
+	const char	*ptr;
+
+	// initialize data
+	ptr = *fmt;
+	ft_memset(data, 0, sizeof(*data));
+	data->precision = -1;
+
+	// skip over
+	++ptr;
+
+	if (*ptr == '\0')
+		return (ptr);
+
+	// parse flags
+	while (1)
+	{
+		if (*ptr == '#')
+			data->alt_form = *ptr;
+		else if (*ptr == '0')
+			data->zero_pad = *ptr;
+		else if (*ptr == '-')
+			data->left_adj = *ptr;
+		else if (*ptr == ' ')
+			data->blank_sign = *ptr;
+		else if (*ptr == '+')
+			data->plus_sign = *ptr;
+		else
+			break ;
+		++ptr;
+	}
+
+	// parse width
+	while (ft_isdigit(*ptr))
+	{
+		data->width = data->width * 10 + (*ptr - '0');
+		++ptr;
+	}
+
+	// parse precision
+	if (*ptr == '.')
+	{
+		// skip over
+		++ptr;
+
+		if (*ptr == '\0' || *ptr == '-')
+			return (ptr);
+
+		while (ft_isdigit(*ptr))
+		{
+			data->precision = data->precision * 10 + (*ptr - '0');
+			++ptr;
+		}
+	}
+	return (ptr);
+}
+
 int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 {
-	t_format	f;
-	size_t		cnt = 0;
+	t_format	*f;
+	int			cnt;
 
+	cnt = 0;
 	while (*fmt)
 	{
 		// specifier
 		if (*fmt == '%')
 		{
-			// initialize format
-			ft_memset(&f, 0, sizeof(f));
-			f.precision = -1;
-
-			// skip over
-			++fmt;
-
-			if (*fmt == '\0')
-				return (-1);
-
-			// parse flags
-			while (1)
-			{
-				if (*fmt == '#')
-					f.alt_form = *fmt;
-				else if (*fmt == '0')
-					f.zero_pad = *fmt;
-				else if (*fmt == '-')
-					f.left_adj = *fmt;
-				else if (*fmt == ' ')
-					f.blank_sign = *fmt;
-				else if (*fmt == '+')
-					f.plus_sign = *fmt;
-				else
-					break ;
-				++fmt;
-			}
-
-			// parse width
-			while (ft_isdigit(*fmt))
-			{
-				f.width = f.width * 10 + (*fmt - '0');
-				++fmt;
-			}
-
-			// parse precision
-			if (*fmt == '.')
-			{
-				// skip over
-				++fmt;
-
-				if (*fmt == '\0' || *fmt == '-')
-					return (-1);
-
-				while (ft_isdigit(*fmt))
-				{
-					f.precision = f.precision * 10 + (*fmt - '0');
-					++fmt;
-				}
-			}
-
-			// %cspdibouxX
+			fmt = parse_format(&fmt, f);
 
 			if (*fmt == '%')
 				cnt += write(fd, fmt, 1);
@@ -124,7 +132,6 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 			else if (*fmt == 'X')
 				cnt += write_hex(fd, ap);
 
-			// invalid specifier
 			else
 				return (-1);
 
