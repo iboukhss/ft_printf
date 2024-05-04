@@ -5,7 +5,8 @@ LDFLAGS = -L.
 LDLIBS = -ltap -lftprintf
 
 # Main sources
-SRCS = ft_printf.c ft_vdprintf.c
+SRCS += ft_printf.c ft_vdprintf.c ft_itoa.c ft_ulltoa.c
+SRCS += ft_memset.c ft_strlen.c ft_isdigit.c
 OBJS = $(SRCS:.c=.o)
 
 # Test sources

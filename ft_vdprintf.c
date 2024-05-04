@@ -6,46 +6,37 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/02 02:16:46 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/04 04:40:57 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdint.h>
 
-size_t	ft_strlen(const char *str)
-{
-	const char	*s;
+static const t_funptr	g_tab[256] = {
+['%'] = write_chr,
+['c'] = write_chr,
+['s'] = write_cstr,
+['p'] = write_ptr,
+['d'] = write_int,
+['i'] = write_int,
+['b'] = write_uint_base,
+['o'] = write_uint_base,
+['u'] = write_uint_base,
+['x'] = write_uint_base,
+['X'] = write_hex,
+};
 
-	s = str;
-	while (*s)
-		++s;
-	return (s - str);
-}
-
-int	ft_isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-void	*ft_memset(void *ptr, int c, size_t n)
-{
-	char	*p;
-
-	p = ptr;
-	while (n--)
-		*p++ = c;
-	return (ptr);
-}
-
-const char	*parse_format(const char **fmt, t_format *data)
+static const char	*parse_format(const char **fmt, t_format *data)
 {
 	const char	*ptr;
 
-	// initialize data
-	ptr = *fmt;
+	// initialize
 	ft_memset(data, 0, sizeof(*data));
 	data->precision = -1;
+
+	// get pointer
+	ptr = *fmt;
 
 	// skip over
 	++ptr;
@@ -54,7 +45,7 @@ const char	*parse_format(const char **fmt, t_format *data)
 		return (ptr);
 
 	// parse flags
-	while (1)
+	while (*ptr)
 	{
 		if (*ptr == '#')
 			data->alt_form = *ptr;
@@ -93,12 +84,16 @@ const char	*parse_format(const char **fmt, t_format *data)
 			++ptr;
 		}
 	}
+
+	// parse specifier
+	data->specifier = *ptr;
+
 	return (ptr);
 }
 
 int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 {
-	t_format	*f;
+	t_format	f;
 	int			cnt;
 
 	cnt = 0;
@@ -107,38 +102,11 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 		// specifier
 		if (*fmt == '%')
 		{
-			fmt = parse_format(&fmt, f);
-
-			if (*fmt == '%')
-				cnt += write(fd, fmt, 1);
-			else if (*fmt == 'c')
-				cnt += write_chr(fd, ap);
-			else if (*fmt == 's')
-				cnt += write_str(fd, ap);
-			else if (*fmt == 'p')
-				cnt += write_ptr(fd, ap);
-			else if (*fmt == 'd' || *fmt == 'i')
-				cnt += write_int(fd, ap);
-
-			// everything below should be very similar
-			else if (*fmt == 'b')
-				cnt += write_uint_base(fd, ap, 2);
-			else if (*fmt == 'o')
-				cnt += write_uint_base(fd, ap, 8);
-			else if (*fmt == 'u')
-				cnt += write_uint_base(fd, ap, 10);
-			else if (*fmt == 'x')
-				cnt += write_uint_base(fd, ap, 16);
-			else if (*fmt == 'X')
-				cnt += write_hex(fd, ap);
-
-			else
-				return (-1);
-
-			// keep going
+			fmt = parse_format(&fmt, &f);
+			cnt += g_tab[(unsigned char)*fmt](fd, &f, ap);
+			// keep going?
 			++fmt;
 		}
-
 		// literal
 		else
 		{
@@ -149,113 +117,86 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 	return (cnt);
 }
 
-int	write_chr(int fd, va_list ap)
+int	write_chr(int fd, t_format *f, va_list ap)
 {
-	int c;
+	int	c;
 
+	if (f->specifier == '%')
+		return (write(fd, "%", 1));
 	c = va_arg(ap, int);
-	return(write(fd, &c, 1));
+	return (write(fd, &c, 1));
 }
 
-int	write_str(int fd, va_list ap)
+int	write_cstr(int fd, t_format *f, va_list ap)
 {
-	char *s;
+	char	*s;
 
+	(void)f;
 	s = va_arg(ap, char *);
 	if (!s)
-		return(write(fd, "(null)", 6));
-	return(write(fd, s, ft_strlen(s)));
+		return (write(fd, "(null)", 6));
+	return (write(fd, s, ft_strlen(s)));
 }
 
-int	write_ptr(int fd, va_list ap)
+int	write_ptr(int fd, t_format *f, va_list ap)
 {
-	uintptr_t		p;
-	unsigned char	buf[64];
-	unsigned char	*end;
-	unsigned char	*beg;
+	char		buf[64];
+	uintptr_t	p;
+	t_str		s;
 
+	(void)f;
 	p = va_arg(ap, uintptr_t);
-	end = buf + sizeof(buf);
-	beg = end;
 	if (!p)
-		return(write(fd, "(nil)", 5));
-	while (1)
-	{
-		*--beg = "0123456789abcdef"[p % 16];
-		p /= 16;
-		if (!p)
-			break ;
-	}
-	*--beg = 'x';
-	*--beg = '0';
-	return(write(fd, beg, end - beg));
+		return (write(fd, "(nil)", 5));
+	s = ft_ulltoa(p, buf, sizeof(buf), 16);
+	return (write(fd, s.data, s.len));
 }
 
-int	write_int(int fd, va_list ap)
+int	write_int(int fd, t_format *f, va_list ap)
 {
-	int				i;
-	unsigned char	buf[64];
-	unsigned char	*end;
-	unsigned char	*beg;
-	int				neg;
+	char	buf[64];
+	int		i;
+	t_str	s;
 
+	(void)f;
 	i = va_arg(ap, int);
-	end = buf + sizeof(buf);
-	beg = end;
-	neg = 0;
-	if (i < 0)
-	{
-		write(fd, "-", 1);	// todo: fix incorrect return value here
-		neg = 1;
-	}
-	else
-		i = -i;
-	while (1)
-	{
-		*--beg = '0' - (i % 10);
-		i /= 10;
-		if (!i)
-			break ;
-	}
-	return(write(fd, beg, end - beg) + neg);
+	s = ft_itoa(i, buf, sizeof(buf));
+	return (write(fd, s.data, s.len));
 }
 
-int	write_uint_base(int fd, va_list ap, int base)
+int	write_uint_base(int fd, t_format *f, va_list ap)
 {
+	char			buf[64];
 	unsigned int	u;
-	unsigned char	buf[64];
-	unsigned char	*end;
-	unsigned char	*beg;
+	int				base;
+	t_str			s;
+	int				c;
+
+	c = f->specifier;
+	if (c == 'b' || c == 'B')
+		base = 2;
+	else if (c == 'o')
+		base = 8;
+	else if (c == 'u')
+		base = 10;
+	else if (c == 'x' || c == 'X')
+		base = 16;
+	else
+		return (-1);
 
 	u = va_arg(ap, unsigned int);
-	end = buf + sizeof(buf);
-	beg = end;
-	while (1)
-	{
-		*--beg = "0123456789abcdef"[u % base];
-		u /= base;
-		if (!u)
-			break ;
-	}
-	return(write(fd, beg, end - beg));
+	s = ft_ulltoa(u, buf, sizeof(buf), base);
+	return (write(fd, s.data, s.len));
 }
 
-int	write_hex(int fd, va_list ap)
+int	write_hex(int fd, t_format *f, va_list ap)
 {
+	char			buf[64];
 	unsigned int	x;
-	unsigned char	buf[64];
-	unsigned char	*end;
-	unsigned char	*beg;
+	t_str			s;
 
+	(void)f;
 	x = va_arg(ap, unsigned int);
-	end = buf + sizeof(buf);
-	beg = end;
-	while (1)
-	{
-		*--beg = "0123456789ABCDEF"[x % 16];
-		x /= 16;
-		if (!x)
-			break ;
-	}
-	return(write(fd, beg, end - beg));
+	s = ft_ulltoa(x, buf, sizeof(buf), 16);
+	return (write(fd, s.data, s.len));
 }
