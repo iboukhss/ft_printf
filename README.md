@@ -13,3 +13,5 @@ It is actually pretty cool :)
 - https://git.musl-libc.org/cgit/musl/tree/src/stdio/vfprintf.c
 - https://www.lix.polytechnique.fr/~liberti/public/computing/prog/c/C/FUNCTIONS/format.html
 - https://nullprogram.com/blog/2023/02/13/
+- https://www.youtube.com/watch?v=vpB9hFX_L2Y
+- https://www.youtube.com/watch?v=kxHN6ICgjgQ

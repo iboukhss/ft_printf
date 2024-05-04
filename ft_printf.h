@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:40:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/04 19:46:42 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:34:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_format
 	int	width;
 	int	precision;
 	int	specifier;
+	int	invalid;
 }	t_format;
 
 typedef void (*t_funptr)(t_buffer *, t_format *, va_list);

@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/04 19:46:56 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:06:14 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,12 @@ static const t_funptr	g_tab[256] = {
 ['X'] = append_hex,
 };
 
-static const char	*parse_format(const char **fmt, t_format *data)
+static const char	*parse_format(const char **fmt, t_format *f)
 {
 	const char	*ptr;
 
-	// initialize
-	ft_memset(data, 0, sizeof(*data));
-	data->precision = -1;
+	ft_memset(f, 0, sizeof(*f));
+	f->precision = -1;
 
 	// get pointer
 	ptr = *fmt;
@@ -42,21 +41,24 @@ static const char	*parse_format(const char **fmt, t_format *data)
 	++ptr;
 
 	if (*ptr == '\0')
+	{
+		f->invalid = 1;
 		return (ptr);
+	}
 
 	// parse flags
 	while (*ptr)
 	{
 		if (*ptr == '#')
-			data->alt_form = *ptr;
+			f->alt_form = *ptr;
 		else if (*ptr == '0')
-			data->zero_pad = *ptr;
+			f->zero_pad = *ptr;
 		else if (*ptr == '-')
-			data->left_adj = *ptr;
+			f->left_adj = *ptr;
 		else if (*ptr == ' ')
-			data->blank_sign = *ptr;
+			f->blank_sign = *ptr;
 		else if (*ptr == '+')
-			data->plus_sign = *ptr;
+			f->plus_sign = *ptr;
 		else
 			break ;
 		++ptr;
@@ -65,28 +67,39 @@ static const char	*parse_format(const char **fmt, t_format *data)
 	// parse width
 	while (ft_isdigit(*ptr))
 	{
-		data->width = data->width * 10 + (*ptr - '0');
+		f->width = f->width * 10 + (*ptr - '0');
 		++ptr;
 	}
 
 	// parse precision
 	if (*ptr == '.')
 	{
+		f->precision = 0;
+
 		// skip over
 		++ptr;
 
 		if (*ptr == '\0' || *ptr == '-')
+		{
+			f->invalid = 1;
 			return (ptr);
+		}
 
 		while (ft_isdigit(*ptr))
 		{
-			data->precision = data->precision * 10 + (*ptr - '0');
+			f->precision = f->precision * 10 + (*ptr - '0');
 			++ptr;
 		}
 	}
 
 	// parse specifier
-	data->specifier = *ptr;
+	if (!g_tab[(unsigned char)*ptr])
+	{
+		f->invalid = 1;
+		return (ptr);
+	}
+
+	f->specifier = *ptr;
 
 	return (ptr);
 }
@@ -103,8 +116,9 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 		if (*fmt == '%')
 		{
 			fmt = parse_format(&fmt, &f);
+			if (f.invalid)
+				return (-1);
 			g_tab[(unsigned char)*fmt](&buf, &f, ap);
-			// keep going?
 			++fmt;
 		}
 		else

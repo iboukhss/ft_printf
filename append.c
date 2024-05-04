@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:41:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/04 19:50:07 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:26:26 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,43 +60,49 @@ void	append_str(t_buffer *b, t_format *f, va_list ap)
 void	append_ptr(t_buffer *b, t_format *f, va_list ap)
 {
 	char		tmp[64];
-	char		*beg;
-	char		*end;
+	size_t		i;
 	uintptr_t	p;
 
 	(void)f;
+	i = sizeof(tmp);
 	p = va_arg(ap, uintptr_t);
 	if (!p)
 	{
 		append(b, "(nil)", 5);
 		return ;
 	}
-	end = tmp + sizeof(tmp);
-	beg = end;
 	while (p)
 	{
-		*--beg = "0123456789abcdef"[p & 15];
+		tmp[--i] = "0123456789abcdef"[p & 15];
 		p >>= 4;
 	}
 	append(b, "0x", 2);
-	append(b, beg, end - beg);
+	append(b, tmp + i, sizeof(tmp) - i);
 }
 
 void	append_int(t_buffer *b, t_format *f, va_list ap)
 {
 	char	tmp[64];
-	char	*beg;
-	char	*end;
-	int		i;
+	size_t	i;
+	int		n;
+	int		neg;
 
 	(void)f;
-	i = va_arg(ap, int);
-	end = tmp + sizeof(tmp);
-	beg = end;
+	i = sizeof(tmp);
+	neg = 0;
+	n = va_arg(ap, int);
+	if (n < 0)
+		neg = 1;
+	else
+		n = -n;
 	while (i)
 	{
-		*--beg = '0' + (i % 10);
-		i /= 10;
+		tmp[--i] = '0' - (n % 10);
+		n /= 10;
+		if (!n)
+			break ;
 	}
-	append(b, beg, end - beg);
+	if (neg)
+		tmp[--i] = '-';
+	append(b, tmp + i, sizeof(tmp) - i);
 }
