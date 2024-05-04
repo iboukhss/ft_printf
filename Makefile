@@ -5,7 +5,7 @@ LDFLAGS = -L.
 LDLIBS = -ltap -lftprintf
 
 # Main sources
-SRCS += ft_printf.c ft_vdprintf.c ft_itoa.c ft_ulltoa.c
+SRCS += ft_printf.c ft_vdprintf.c append.c append_extras.c
 SRCS += ft_memset.c ft_strlen.c ft_isdigit.c
 OBJS = $(SRCS:.c=.o)
 
@@ -18,7 +18,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	ar -rcs $@ $^
 
-%.o: %.c ft_printf.h
+%.o: %.c ft_printf.h append.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 test: $(TEST_EXES)
