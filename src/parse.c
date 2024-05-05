@@ -6,14 +6,14 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:49:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/05 20:25:06 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/05 23:27:57 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "libft.h"
 
-static const char	*parse_flags(const char **fmt, t_format *f)
+const char	*parse_flags(const char **fmt, t_format *f)
 {
 	const char	*ptr;
 
@@ -37,7 +37,7 @@ static const char	*parse_flags(const char **fmt, t_format *f)
 	return (ptr);
 }
 
-static const char	*parse_width(const char **fmt, t_format *f)
+const char	*parse_width(const char **fmt, t_format *f)
 {
 	const char	*ptr;
 
@@ -50,8 +50,7 @@ static const char	*parse_width(const char **fmt, t_format *f)
 	if (*ptr == '.')
 	{
 		f->precision = 0;
-		++ptr;
-		if (*ptr == '\0' || *ptr == '-')
+		if (*++ptr == '\0' || *ptr == '-')
 		{
 			f->invalid = 1;
 			return (ptr);
@@ -62,23 +61,5 @@ static const char	*parse_width(const char **fmt, t_format *f)
 			++ptr;
 		}
 	}
-	return (ptr);
-}
-
-const char	*parse_format(const char **fmt, t_format *f)
-{
-	const char	*ptr;
-
-	ft_memset(f, 0, sizeof(*f));
-	f->precision = -1;
-	ptr = *fmt;
-	if (*++ptr == '\0')
-	{
-		f->invalid = 1;
-		return (ptr);
-	}
-	ptr = parse_flags(&ptr, f);
-	ptr = parse_width(&ptr, f);
-	f->specifier = *ptr;
 	return (ptr);
 }

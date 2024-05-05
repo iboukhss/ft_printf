@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:47:39 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/05 20:32:14 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/06 00:28:34 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@ void	append_int(t_buffer *b, t_format *f, va_list ap)
 	char	tmp[64];
 	size_t	i;
 	int		n;
-	int		neg;
 
 	i = sizeof(tmp);
 	n = va_arg(ap, int);
-	neg = 0;
 	if (n < 0)
-		neg = 1;
-	else
+		append(b, "-", 1);
+	else if (f->plus_sign)
+		append(b, "+", 1);
+	else if (f->blank_sign)
+		append(b, " ", 1);
+	if (n > 0)
 		n = -n;
 	while (i)
 	{
@@ -34,12 +36,6 @@ void	append_int(t_buffer *b, t_format *f, va_list ap)
 		if (!n)
 			break ;
 	}
-	if (neg)
-		append(b, "-", 1);
-	else if (f->plus_sign)
-		append(b, "+", 1);
-	else if (f->blank_sign)
-		append(b, " ", 1);
 	append(b, tmp + i, sizeof(tmp) - i);
 }
 
@@ -66,9 +62,13 @@ void	append_hex(t_buffer *b, t_format *f, va_list ap)
 	unsigned int	x;
 	int				lower;
 
-	x = va_arg(ap, unsigned int);
 	i = sizeof(tmp);
+	x = va_arg(ap, unsigned int);
 	lower = (f->specifier & 0x20);
+	if (x && f->alt_form && lower)
+		append(b, "0x", 2);
+	else if (x && f->alt_form)
+		append(b, "0X", 2);
 	while (i)
 	{
 		tmp[--i] = "0123456789ABCDEF"[x & 15] | lower;
@@ -76,9 +76,5 @@ void	append_hex(t_buffer *b, t_format *f, va_list ap)
 		if (!x)
 			break ;
 	}
-	if (f->alt_form && lower)
-		append(b, "0x", 2);
-	else if (f->alt_form)
-		append(b, "0X", 2);
 	append(b, tmp + i, sizeof(tmp) - i);
 }

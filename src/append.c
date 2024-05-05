@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:41:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/05 20:32:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/05 23:05:08 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,22 @@
 
 void	flush(t_buffer *b)
 {
-	write(b->fd, b->data, b->len);
-	b->len = 0;
-	b->full = 0;
+	b->error |= b->fd < 0;
+	if (!b->error)
+	{
+		b->error |= (write(b->fd, b->data, b->len) == -1);
+		b->len = 0;
+	}
 }
 
 void	append(t_buffer *b, const void *src, size_t n)
 {
 	const char	*s;
-	size_t		avail;
 
 	s = src;
 	while (n)
 	{
-		avail = b->cap - b->len;
-		b->full |= n > avail;
-		while (n && b->len < b->cap)
+		while (n && b->len < BUFSIZ)
 		{
 			b->data[b->len] = *s;
 			++b->len;
@@ -38,8 +38,12 @@ void	append(t_buffer *b, const void *src, size_t n)
 			++s;
 			--n;
 		}
-		if (b->full)
+		if (n)
+		{
 			flush(b);
+			if (b->error)
+				return ;
+		}
 	}
 }
 

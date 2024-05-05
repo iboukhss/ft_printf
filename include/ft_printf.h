@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:40:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/05 20:28:40 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/06 01:21:57 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,15 @@
 # include <unistd.h>
 # include <stdarg.h>
 
-# define BUFFER_SIZE 1024
+# define BUFSIZ 1024
 
 typedef struct s_buffer
 {
 	int		fd;
-	char	data[BUFFER_SIZE];
-	size_t	cap;
+	char	data[BUFSIZ];
 	size_t	len;
 	size_t	cnt;
-	int		full;
+	int		error;
 }	t_buffer;
 
 typedef struct s_format
