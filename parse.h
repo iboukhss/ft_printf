@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/04 04:22:43 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/04 04:23:02 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/05 19:51:00 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/05 19:52:03 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#ifndef PARSE_H
+# define PARSE_H
 
-int	ft_isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
-}
+# include "ft_printf.h"
+
+const char	*parse_format(const char **fmt, t_format *f);
+
+#endif

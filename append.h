@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:43:05 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/04 20:09:38 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/05 05:30:23 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define APPEND_H
 
 # include "ft_printf.h"
-# include <stdint.h>
 
 void	append(t_buffer *buf, const void *src, size_t n);
+void	flush(t_buffer *b);
 
 void	append_byte(t_buffer *b, t_format *f, va_list ap);
 void	append_str(t_buffer *b, t_format *f, va_list ap);

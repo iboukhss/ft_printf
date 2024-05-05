@@ -6,27 +6,40 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:41:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/04 22:26:26 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:32:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "append.h"
+#include "libft.h"
+
+void	flush(t_buffer *b)
+{
+	write(b->fd, b->data, b->len);
+	b->len = 0;
+	b->full = 0;
+}
 
 void	append(t_buffer *b, const void *src, size_t n)
 {
 	const char	*s;
 	size_t		avail;
 
-	avail = b->cap - b->len;
-	b->full |= n > avail;
-	if (b->full)
-		return ;
 	s = src;
-	while (n--)
+	while (n)
 	{
-		b->data[b->len] = *s;
-		++b->len;
-		++s;
+		avail = b->cap - b->len;
+		b->full |= n > avail;
+		while (n && b->len < b->cap)
+		{
+			b->data[b->len] = *s;
+			++b->len;
+			++b->cnt;
+			++s;
+			--n;
+		}
+		if (b->full)
+			flush(b);
 	}
 }
 
@@ -46,6 +59,7 @@ void	append_byte(t_buffer *b, t_format *f, va_list ap)
 void	append_str(t_buffer *b, t_format *f, va_list ap)
 {
 	char	*s;
+	size_t	i;
 
 	(void)f;
 	s = va_arg(ap, char *);
@@ -54,7 +68,8 @@ void	append_str(t_buffer *b, t_format *f, va_list ap)
 		append(b, "(null)", 6);
 		return ;
 	}
-	append(b, s, ft_strlen(s));
+	i = ft_strlen(s);
+	append(b, s, i);
 }
 
 void	append_ptr(t_buffer *b, t_format *f, va_list ap)
@@ -77,32 +92,5 @@ void	append_ptr(t_buffer *b, t_format *f, va_list ap)
 		p >>= 4;
 	}
 	append(b, "0x", 2);
-	append(b, tmp + i, sizeof(tmp) - i);
-}
-
-void	append_int(t_buffer *b, t_format *f, va_list ap)
-{
-	char	tmp[64];
-	size_t	i;
-	int		n;
-	int		neg;
-
-	(void)f;
-	i = sizeof(tmp);
-	neg = 0;
-	n = va_arg(ap, int);
-	if (n < 0)
-		neg = 1;
-	else
-		n = -n;
-	while (i)
-	{
-		tmp[--i] = '0' - (n % 10);
-		n /= 10;
-		if (!n)
-			break ;
-	}
-	if (neg)
-		tmp[--i] = '-';
 	append(b, tmp + i, sizeof(tmp) - i);
 }
