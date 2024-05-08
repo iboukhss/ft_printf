@@ -13,7 +13,7 @@ MAIN_INC_SRCS = $(addprefix $(MAIN_DIR),$(MAIN_INC_FILES))
 # Library sources
 LIBFT_DIR = ./libft/
 LIBFT_FILES += ft_strlen.c ft_isdigit.c ft_memset.c
-LIBFT_FILES += ft_u64toa.c ft_u64toa_base.c ft_i64toa_abs.c
+LIBFT_FILES += ft_u64toa.c ft_u64toa_base.c ft_i64toa.c
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
 
 # Headers

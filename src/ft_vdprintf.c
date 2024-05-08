@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 02:47:28 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 23:03:32 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,12 @@ static void	init_format(t_format *f)
 
 static void	handle_fmt(const char **fmt, t_buffer *buf, t_format *f, va_list ap)
 {
-	const char	*s;
-
 	init_format(f);
-	s = *fmt;
-	f->invalid |= (*s == '\0');
-	s = parse_flags(&s, f);
-	s = parse_width(&s, f);
-	s = parse_precision(&s, f);
-	f->specifier = *s;
+	f->invalid |= (**fmt == '\0');
+	parse_flags(fmt, f);
+	parse_width(fmt, f);
+	parse_precision(fmt, f);
+	f->specifier = **fmt;
 	f->invalid |= (!g_tab[f->specifier]);
 	if (f->invalid)
 	{
@@ -59,7 +56,6 @@ static void	handle_fmt(const char **fmt, t_buffer *buf, t_format *f, va_list ap)
 		return ;
 	}
 	g_tab[f->specifier](buf, f, ap);
-	*fmt = s;
 }
 
 int	ft_vdprintf(int fd, const char *fmt, va_list ap)

@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 19:35:02 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 03:01:44 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 23:02:40 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static size_t	count_digits_base(uint64_t val, int base)
 	size_t	count;
 
 	count = 0;
-	if (!val)
+	if (val == 0)
 		return (1);
 	while (val)
 	{

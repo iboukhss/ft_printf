@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:41:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 03:30:13 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 23:06:19 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,25 @@ void	append(t_buffer *buf, const void *src, size_t n)
 		while (n && buf->len < buf->cap)
 		{
 			buf->data[buf->len++] = *s++;
+			++buf->cnt;
+			--n;
+		}
+		if (n)
+		{
+			flush(buf);
+		}
+	}
+}
+
+void	fill(t_buffer *buf, int c, size_t n)
+{
+	while (n)
+	{
+		if (buf->error)
+			return ;
+		while (n && buf->len < buf->cap)
+		{
+			buf->data[buf->len++] = c;
 			++buf->cnt;
 			--n;
 		}
@@ -64,19 +83,4 @@ void	append_str(t_buffer *buf, t_format *f, va_list ap)
 		return (append(buf, "(null)", 6));
 	i = ft_strlen(s);
 	append(buf, s, i);
-}
-
-void	append_ptr(t_buffer *buf, t_format *f, va_list ap)
-{
-	char		tmp[64];
-	size_t		len;
-	uintptr_t	p;
-
-	(void)f;
-	p = va_arg(ap, uintptr_t);
-	if (!p)
-		return (append(buf, "(nil)", 5));
-	len = ft_u64toa_base(p, tmp, sizeof(tmp), HEX);
-	append(buf, "0x", 2);
-	append(buf, tmp, len);
 }

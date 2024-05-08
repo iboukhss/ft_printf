@@ -6,73 +6,61 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:49:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 10:28:06 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:43:25 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "libft.h"
 
-const char	*parse_flags(const char **fmt, t_format *f)
+void	parse_flags(const char **fmt, t_format *f)
 {
-	const char	*s;
-
 	if (f->invalid)
-		return (*fmt);
-	s = *fmt;
-	while (*s)
+		return ;
+	while (**fmt)
 	{
-		if (*s == '#')
+		if (**fmt == '#')
 			f->alt_form = true;
-		else if (*s == '0')
+		else if (**fmt == '0')
 			f->zero_pad = true;
-		else if (*s == '-')
+		else if (**fmt == '-')
 			f->left_adj = true;
-		else if (*s == ' ')
+		else if (**fmt == ' ')
 			f->hide_pos = true;
-		else if (*s == '+')
+		else if (**fmt == '+')
 			f->show_pos = true;
 		else
 			break ;
-		++s;
+		(*fmt)++;
 	}
-	return (s);
 }
 
-const char	*parse_width(const char **fmt, t_format *f)
+void	parse_width(const char **fmt, t_format *f)
 {
-	const char	*s;
-
 	if (f->invalid)
-		return (*fmt);
-	s = *fmt;
-	while (ft_isdigit(*s))
+		return ;
+	while (ft_isdigit(**fmt))
 	{
-		f->width = f->width * 10 + (*s - '0');
-		++s;
+		f->width = f->width * 10 + (**fmt - '0');
+		(*fmt)++;
 	}
-	return (s);
 }
 
-const char	*parse_precision(const char **fmt, t_format *f)
+void	parse_precision(const char **fmt, t_format *f)
 {
-	const char	*s;
-
 	if (f->invalid)
-		return (*fmt);
-	s = *fmt;
-	if (*s == '.')
+		return ;
+	if (**fmt == '.')
 	{
-		++s;
-		f->invalid |= (*s == '\0' || *s == '-');
+		(*fmt)++;
+		f->invalid |= (**fmt == '\0' || **fmt == '-');
 		if (f->invalid)
-			return (*fmt);
+			return ;
 		f->precision = 0;
-		while (ft_isdigit(*s))
+		while (ft_isdigit(**fmt))
 		{
-			f->precision = f->precision * 10 + (*s - '0');
-			++s;
+			f->precision = f->precision * 10 + (**fmt - '0');
+			(*fmt)++;
 		}
 	}
-	return (s);
 }

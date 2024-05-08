@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_i64toa_abs.c                                    :+:      :+:    :+:   */
+/*   ft_i64toa.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 19:22:31 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 03:01:50 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/08 17:19:08 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/08 17:57:02 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ static size_t	count_digits(int64_t val)
 {
 	size_t	count;
 
-	count = 1;
-	while (val < -9)
+	count = 0;
+	if (val == 0)
+		return (1);
+	while (val)
 	{
 		val /= 10;
 		++count;
@@ -25,21 +27,27 @@ static size_t	count_digits(int64_t val)
 	return (count);
 }
 
-int	ft_i64toa_abs(int64_t val, char *buf, size_t size)
+int	ft_i64toa(int64_t val, char *buf, size_t size)
 {
+	int		neg;
 	size_t	len;
 	size_t	i;
 
-	if (val > 0)
-		val = -val;
+	neg = 0;
 	len = count_digits(val);
-	if (len > size)
+	if (val < 0)
+		neg = 1;
+	else
+		val = -val;
+	if (size < len + neg)
 		return (-1);
-	i = len;
+	i = len + neg;
 	while (i)
 	{
 		buf[--i] = '0' - (val % 10);
 		val /= 10;
 	}
-	return (len);
+	if (neg)
+		buf[0] = '-';
+	return (len + neg);
 }

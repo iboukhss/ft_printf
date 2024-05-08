@@ -6,23 +6,40 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:47:39 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 10:27:58 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 23:12:32 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "append.h"
 #include "libft.h"
 
+void	append_ptr(t_buffer *buf, t_format *f, va_list ap)
+{
+	char		tmp[64];
+	size_t		len;
+	uintptr_t	p;
+
+	(void)f;
+	p = va_arg(ap, uintptr_t);
+	if (!p)
+		return (append(buf, "(nil)", 5));
+	len = ft_u64toa_base(p, tmp, sizeof(tmp), HEX);
+	append(buf, "0x", 2);
+	append(buf, tmp, len);
+}
+
 void	append_int(t_buffer *buf, t_format *f, va_list ap)
 {
 	char	tmp[64];
 	size_t	len;
-	int		i;
+	int		n;
 
-	i = va_arg(ap, int);
-	len = ft_i64toa_abs(i, tmp, sizeof(tmp));
-	if (i < 0)
-		append(buf, "-", 1);
+	n = va_arg(ap, int);
+	if (!n && !f->precision)
+		return ;
+	len = ft_i64toa(n, tmp, sizeof(tmp));
+	if (n < 0)
+		;
 	else if (f->show_pos)
 		append(buf, "+", 1);
 	else if (f->hide_pos)
