@@ -15,3 +15,4 @@ It is actually pretty cool :)
 - https://nullprogram.com/blog/2023/02/13/
 - https://www.youtube.com/watch?v=vpB9hFX_L2Y
 - https://www.youtube.com/watch?v=kxHN6ICgjgQ
+- https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3096.pdf
