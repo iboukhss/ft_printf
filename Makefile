@@ -1,3 +1,4 @@
+# Target
 NAME = libftprintf.a
 CC = clang
 CFLAGS = -Wall -Wextra -g -MMD
@@ -11,7 +12,8 @@ MAIN_INC_SRCS = $(addprefix $(MAIN_DIR),$(MAIN_INC_FILES))
 
 # Library sources
 LIBFT_DIR = ./libft/
-LIBFT_FILES = ft_strlen.c ft_isdigit.c ft_u64toa.c ft_memset.c
+LIBFT_FILES += ft_strlen.c ft_isdigit.c ft_memset.c
+LIBFT_FILES += ft_u64toa.c ft_u64toa_base.c ft_i64toa_abs.c
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
 
 # Headers
@@ -21,7 +23,7 @@ INC_SRCS = $(addprefix $(INC_DIR),$(INC_FILES))
 
 # Target sources
 SRCS = $(MAIN_SRCS) $(LIBFT_SRCS)
-INCS = $(INC_SRCS) $(MAIN_INC_SRCS)
+INCS = $(MAIN_INC_SRCS) $(INC_SRCS)
 OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
 

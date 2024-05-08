@@ -6,15 +6,17 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:40:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/06 01:21:57 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 02:43:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+# include <stdint.h>
 # include <unistd.h>
 # include <stdarg.h>
+# include <stdbool.h>
 
 # define BUFSIZ 1024
 
@@ -22,6 +24,7 @@ typedef struct s_buffer
 {
 	int		fd;
 	char	data[BUFSIZ];
+	size_t	cap;
 	size_t	len;
 	size_t	cnt;
 	int		error;
@@ -29,15 +32,15 @@ typedef struct s_buffer
 
 typedef struct s_format
 {
-	int	alt_form;
-	int	zero_pad;
-	int	left_adj;
-	int	blank_sign;
-	int	plus_sign;
-	int	width;
-	int	precision;
-	int	specifier;
-	int	invalid;
+	bool	alt_form;
+	bool	zero_pad;
+	bool	left_adj;
+	bool	blank_sign;
+	bool	plus_sign;
+	int		width;
+	int		precision;
+	uint8_t	specifier;
+	bool	invalid;
 }	t_format;
 
 typedef void	(*t_funptr)(t_buffer *, t_format *, va_list);

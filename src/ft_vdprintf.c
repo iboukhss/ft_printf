@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/05 23:43:20 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 02:47:28 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include "parse.h"
 #include "append.h"
 #include "libft.h"
+#include <errno.h>
 
 static const t_funptr	g_tab[256] = {
-['%'] = append_byte,
-['c'] = append_byte,
+['%'] = append_char,
+['c'] = append_char,
 ['s'] = append_str,
 ['p'] = append_ptr,
 ['d'] = append_int,
@@ -31,48 +32,57 @@ static void	init_buffer(int fd, t_buffer *buf)
 {
 	ft_memset(buf, 0, sizeof(*buf));
 	buf->fd = fd;
+	buf->cap = sizeof(buf->data);
 }
 
-static const char	*parse_format(const char **fmt, t_format *f)
+static void	init_format(t_format *f)
 {
-	const char	*ptr;
-
 	ft_memset(f, 0, sizeof(*f));
 	f->precision = -1;
-	ptr = *fmt;
-	if (*++ptr == '\0')
+}
+
+static void	handle_fmt(const char **fmt, t_buffer *buf, t_format *f, va_list ap)
+{
+	const char	*s;
+
+	init_format(f);
+	s = *fmt;
+	f->invalid |= (*s == '\0');
+	s = parse_flags(&s, f);
+	s = parse_width(&s, f);
+	s = parse_precision(&s, f);
+	f->specifier = *s;
+	f->invalid |= (!g_tab[f->specifier]);
+	if (f->invalid)
 	{
-		f->invalid = 1;
-		return (ptr);
+		errno = EINVAL;
+		return ;
 	}
-	ptr = parse_flags(&ptr, f);
-	ptr = parse_width(&ptr, f);
-	f->specifier = *ptr;
-	f->invalid |= !g_tab[(unsigned char)*ptr];
-	return (ptr);
+	g_tab[f->specifier](buf, f, ap);
+	*fmt = s;
 }
 
 int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 {
-	t_format	f;
 	t_buffer	buf;
+	t_format	f;
 
 	init_buffer(fd, &buf);
 	while (*fmt)
 	{
 		if (*fmt == '%')
 		{
-			fmt = parse_format(&fmt, &f);
+			++fmt;
+			handle_fmt(&fmt, &buf, &f, ap);
 			if (f.invalid)
 				return (-1);
-			g_tab[(unsigned char)*fmt](&buf, &f, ap);
 		}
 		else
 		{
 			append(&buf, fmt, 1);
+			if (buf.error)
+				return (-1);
 		}
-		if (buf.error)
-			return (-1);
 		++fmt;
 	}
 	flush(&buf);

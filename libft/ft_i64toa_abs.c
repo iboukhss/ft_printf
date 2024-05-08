@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_u64toa.c                                        :+:      :+:    :+:   */
+/*   ft_i64toa_abs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/05 04:28:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 03:19:41 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/06 19:22:31 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/08 03:01:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	count_digits(uint64_t val)
+static size_t	count_digits(int64_t val)
 {
-	int	count;
+	size_t	count;
 
 	count = 1;
-	while (val > 9)
+	while (val < -9)
 	{
 		val /= 10;
 		++count;
@@ -25,18 +25,20 @@ static size_t	count_digits(uint64_t val)
 	return (count);
 }
 
-int	ft_u64toa(uint64_t val, char *buf, size_t size)
+int	ft_i64toa_abs(int64_t val, char *buf, size_t size)
 {
 	size_t	len;
 	size_t	i;
 
+	if (val > 0)
+		val = -val;
 	len = count_digits(val);
-	if (size < len + 1)
+	if (len > size)
 		return (-1);
 	i = len;
 	while (i)
 	{
-		buf[--i] = '0' + (val % 10);
+		buf[--i] = '0' - (val % 10);
 		val /= 10;
 	}
 	return (len);

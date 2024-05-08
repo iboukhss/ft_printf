@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:51:00 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/05 23:17:15 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 02:11:19 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 
 const char	*parse_flags(const char **fmt, t_format *f);
 const char	*parse_width(const char **fmt, t_format *f);
+const char	*parse_precision(const char **fmt, t_format *f);
 
 #endif
