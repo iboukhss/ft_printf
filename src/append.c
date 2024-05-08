@@ -6,31 +6,31 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:41:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 03:15:35 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 03:30:13 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "append.h"
 #include "libft.h"
 
-void	append(t_buffer *b, const void *src, size_t n)
+void	append(t_buffer *buf, const void *src, size_t n)
 {
 	const char	*s;
 
 	s = src;
 	while (n)
 	{
-		if (b->error)
+		if (buf->error)
 			return ;
-		while (n && b->len < b->cap)
+		while (n && buf->len < buf->cap)
 		{
-			b->data[b->len++] = *s++;
-			++b->cnt;
+			buf->data[buf->len++] = *s++;
+			++buf->cnt;
 			--n;
 		}
 		if (n)
 		{
-			flush(b);
+			flush(buf);
 		}
 	}
 }
@@ -66,7 +66,7 @@ void	append_str(t_buffer *buf, t_format *f, va_list ap)
 	append(buf, s, i);
 }
 
-void	append_ptr(t_buffer *b, t_format *f, va_list ap)
+void	append_ptr(t_buffer *buf, t_format *f, va_list ap)
 {
 	char		tmp[64];
 	size_t		len;
@@ -75,8 +75,8 @@ void	append_ptr(t_buffer *b, t_format *f, va_list ap)
 	(void)f;
 	p = va_arg(ap, uintptr_t);
 	if (!p)
-		return (append(b, "(nil)", 5));
+		return (append(buf, "(nil)", 5));
 	len = ft_u64toa_base(p, tmp, sizeof(tmp), HEX);
-	append(b, "0x", 2);
-	append(b, tmp, len);
+	append(buf, "0x", 2);
+	append(buf, tmp, len);
 }

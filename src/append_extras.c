@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:47:39 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 03:16:03 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 10:27:58 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	append_int(t_buffer *buf, t_format *f, va_list ap)
 	len = ft_i64toa_abs(i, tmp, sizeof(tmp));
 	if (i < 0)
 		append(buf, "-", 1);
-	else if (f->plus_sign)
+	else if (f->show_pos)
 		append(buf, "+", 1);
-	else if (f->blank_sign)
+	else if (f->hide_pos)
 		append(buf, " ", 1);
 	append(buf, tmp, len);
 }
@@ -38,9 +38,9 @@ void	append_uint(t_buffer *buf, t_format *f, va_list ap)
 
 	u = va_arg(ap, unsigned int);
 	len = ft_u64toa(u, tmp, sizeof(tmp));
-	if (f->plus_sign)
+	if (f->show_pos)
 		append(buf, "+", 1);
-	else if (f->blank_sign)
+	else if (f->hide_pos)
 		append(buf, " ", 1);
 	append(buf, tmp, len);
 }

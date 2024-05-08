@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:40:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 02:43:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 10:27:37 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ typedef struct s_format
 	bool	alt_form;
 	bool	zero_pad;
 	bool	left_adj;
-	bool	blank_sign;
-	bool	plus_sign;
+	bool	hide_pos;
+	bool	show_pos;
 	int		width;
 	int		precision;
 	uint8_t	specifier;

@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:49:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 02:16:27 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/08 10:28:06 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ const char	*parse_flags(const char **fmt, t_format *f)
 		else if (*s == '-')
 			f->left_adj = true;
 		else if (*s == ' ')
-			f->blank_sign = true;
+			f->hide_pos = true;
 		else if (*s == '+')
-			f->plus_sign = true;
+			f->show_pos = true;
 		else
 			break ;
 		++s;
