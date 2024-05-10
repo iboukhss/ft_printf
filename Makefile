@@ -1,7 +1,8 @@
-# Target
 NAME = libftprintf.a
 CC = clang
 CFLAGS = -Wall -Wextra -g -MMD
+LDFLAGS = -L.
+LDLIBS = -ltap -lftprintf
 
 # Main sources
 MAIN_DIR = ./src/
@@ -27,28 +28,48 @@ INCS = $(MAIN_INC_SRCS) $(INC_SRCS)
 OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
 
+# Test sources
+TEST_DIR = ./t/
+TEST_FILES = specifiers.c prefixes.c precision.c width.c
+TEST_SRCS = $(addprefix $(TEST_DIR),$(TEST_FILES))
+TEST_EXES = $(TEST_SRCS:.c=.t)
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	ar -rcs $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I$(INC_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
 
 bonus: all
 
 norm:
 	-norminette $(SRCS) $(INCS)
 
+# Testing
+tests: $(TEST_EXES)
+
+%.t: %.c libtap.a libftprintf.a
+	$(CC) $(CFLAGS) -I$(INC_DIR) $< $(LDFLAGS) $(LDLIBS) -o $@
+
+libtap.a: t/tap.o
+	ar -rcs $@ $<
+
+tap.o: t/tap.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
 	rm -f $(OBJS) $(DEPS)
+	rm -f t/*o t/*.d
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f *.a
+	rm -f t/*.t
 
 re: fclean all
 
 # Dependencies
 -include $(DEPS)
 
-.PHONY: all bonus norm clean fclean re
+.PHONY: all bonus norm tests clean fclean re
