@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 12:29:26 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/10 05:52:54 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/10 21:27:58 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,40 +50,52 @@ int	main(void)
 	PRINT("%.5d", 42);
 	PRINT("%.5d", -42);
 	PRINT("%.5d", 0);
+	PRINT("%.15d", INT_MIN);
+	PRINT("%.15d", INT_MAX);
 
 	PRINT("%.1d", 42);
 	PRINT("%.1d", -42);
 	PRINT("%.1d", 0);
+	PRINT("%.1d", INT_MIN);
+	PRINT("%.1d", INT_MAX);
 
 	PRINT("%.0d", 42);
 	PRINT("%.0d", -42);
 	PRINT("%.0d", 0);
+	PRINT("%.0d", INT_MIN);
+	PRINT("%.0d", INT_MAX);
 
 	diag("unsigned int ###########################");
 	PRINT("%.5u", 42);
 	PRINT("%.5u", -42);
 	PRINT("%.5u", 0);
+	PRINT("%.15u", UINT_MAX);
 
 	PRINT("%.1u", 42);
 	PRINT("%.1u", -42);
 	PRINT("%.1u", 0);
+	PRINT("%.1u", UINT_MAX);
 
 	PRINT("%.0u", 42);
 	PRINT("%.0u", -42);
 	PRINT("%.0u", 0);
+	PRINT("%.0u", UINT_MAX);
 
 	diag("hexadecimal ############################");
 	PRINT("%.5x", 42);
 	PRINT("%.5x", -42);
 	PRINT("%.5x", 0);
+	PRINT("%.15u", UINT_MAX);
 
 	PRINT("%.1x", 42);
 	PRINT("%.1x", -42);
 	PRINT("%.1x", 0);
+	PRINT("%.1x", UINT_MAX);
 
 	PRINT("%.0x", 42);
 	PRINT("%.0x", -42);
 	PRINT("%.0x", 0);
+	PRINT("%.0u", UINT_MAX);
 
 	// teardown
 	dup2(saved, 1);
