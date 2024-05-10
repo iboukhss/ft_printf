@@ -213,8 +213,8 @@ cmp_mem_at_loc (const char *file, int line, const void *got,
     va_end(args);
     if (diff == 1) {
         diag("    Difference starts at offset %d", offset);
-        diag("         got: 0x%02x", ((const unsigned char *)got)[offset]);
-        diag("    expected: 0x%02x", ((const unsigned char *)expected)[offset]);
+        diag("         got: %s", ((const char *)got));
+        diag("    expected: %s", ((const char *)expected));
     }
     else if (diff == 2) {
         diag("         got: %s", got ? "not NULL" : "NULL");
