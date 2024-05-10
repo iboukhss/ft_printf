@@ -14,7 +14,7 @@ MAIN_INC_SRCS = $(addprefix $(MAIN_DIR),$(MAIN_INC_FILES))
 # Library sources
 LIBFT_DIR = ./libft/
 LIBFT_FILES += ft_strlen.c ft_isdigit.c ft_memset.c
-LIBFT_FILES += ft_u64toa.c ft_u64toa_base.c ft_i64toa.c
+LIBFT_FILES += ft_u64toa.c ft_u64toa_base.c ft_i64toa_abs.c
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
 
 # Headers
@@ -30,7 +30,8 @@ DEPS = $(OBJS:.o=.d)
 
 # Test sources
 TEST_DIR = ./t/
-TEST_FILES = specifiers.c prefixes.c precision.c width.c
+TEST_FILES += specifiers.c prefixes.c precision.c width.c
+TEST_FILES += width_and_precision.c mixed_flags.c
 TEST_SRCS = $(addprefix $(TEST_DIR),$(TEST_FILES))
 TEST_EXES = $(TEST_SRCS:.c=.t)
 
@@ -60,7 +61,7 @@ tap.o: t/tap.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(DEPS)
+	rm -f src/*.o src/*.d
 	rm -f t/*o t/*.d
 
 fclean: clean

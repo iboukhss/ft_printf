@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 05:22:29 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 17:28:01 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:55:02 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		ft_isdigit(int c);
 int		ft_u64toa(uint64_t val, char *buf, size_t size);
 int		ft_u64toa_base(uint64_t val, char *buf, size_t size, int base);
 int		ft_i64toa(int64_t val, char *buf, size_t size);
+int		ft_i64toa_abs(int64_t val, char *buf, size_t size);
 
 void	*ft_memset(void *ptr, int c, size_t n);
 

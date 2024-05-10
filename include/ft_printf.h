@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 08:40:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 10:27:37 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/10 09:46:19 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 # include <stdarg.h>
 # include <stdbool.h>
 
-# define BUFSIZ 1024
+# define BUFFER_SIZE 1024
 
 typedef struct s_buffer
 {
 	int		fd;
-	char	data[BUFSIZ];
+	char	data[BUFFER_SIZE];
 	size_t	cap;
 	size_t	len;
 	size_t	cnt;
