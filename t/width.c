@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 06:36:10 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/10 18:23:21 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/11 01:01:13 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <stdint.h>
 
 // test structure
 struct {
@@ -96,6 +97,15 @@ int	main(void)
 	PRINT("%0x", -42);
 	PRINT("%0x", 0);
 	PRINT("%0x", UINT_MAX);
+
+	diag("pointer ################################");
+	PRINT("%25p", "42");
+	PRINT("%25p", NULL);
+	PRINT("%25p", (void *)UINTPTR_MAX);
+
+	PRINT("%1p", "42");
+	PRINT("%1p", NULL);
+	PRINT("%1p", (void *)UINTPTR_MAX);
 
 	// teardown
 	dup2(saved, 1);

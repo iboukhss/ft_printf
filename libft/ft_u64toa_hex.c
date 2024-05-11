@@ -1,58 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_u64toa_base.c                                   :+:      :+:    :+:   */
+/*   ft_u64toa_hex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 19:35:02 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 23:02:40 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/11 00:17:30 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/11 00:37:04 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static const char	*g_tab[256] = {
-['b'] = "01",
-['B'] = "01",
-['o'] = "01234567",
-['x'] = "0123456789abcdef",
-['X'] = "0123456789ABCDEF",
-};
-
-static size_t	count_digits_base(uint64_t val, int base)
+static size_t	count_digits_hex(uint64_t val)
 {
 	size_t	count;
 
-	count = 0;
-	if (val == 0)
+	if (!val)
 		return (1);
+	count = 0;
 	while (val)
 	{
-		val /= base;
+		val >>= 4;
 		++count;
 	}
 	return (count);
 }
 
-int	ft_u64toa_base(uint64_t val, char *buf, size_t size, int base)
+int	ft_u64toa_hex(uint64_t val, char *buf, size_t size, int lower)
 {
-	const char	*digits;
 	size_t		len;
 	size_t		i;
 
-	if (!g_tab[(unsigned char)base])
-		return (-1);
-	digits = g_tab[(unsigned char)base];
-	base = ft_strlen(digits);
-	len = count_digits_base(val, base);
+	len = count_digits_hex(val);
 	if (len > size)
 		return (-1);
 	i = len;
 	while (i)
 	{
-		buf[--i] = digits[val % base];
-		val /= base;
+		buf[--i] = "0123456789ABCDEF"[val & 15] | lower;
+		val >>= 4;
 	}
 	return (len);
 }

@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   specifiers.c                                       :+:      :+:    :+:   */
+/*   align.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/09 10:17:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/11 00:54:55 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/10 23:54:52 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/10 23:58:26 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tap.h"
 #include "ft_printf.h"
 
-#include <stdint.h>
 #include <string.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -47,52 +46,56 @@ int	main(void)
 	int saved = dup(STDOUT_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 
-	diag("no specifier ###########################");
-	PRINT("hello world!");
-	PRINT("");
-
-	diag("percent sign ###########################");
-	PRINT("%%");
-
-	diag("char ###################################");
-	PRINT("%c", 'a');
-	PRINT("%c", '\0');
-
-	diag("string #################################");
-	PRINT("%s", "hello!");
-	PRINT("%s", (char *)NULL);
-
-	diag("pointer ################################");
-	PRINT("%p", "hello!");
-	PRINT("%p", NULL);
-	PRINT("%p", (void *)LONG_MIN);
-	PRINT("%p", (void *)LONG_MAX);
-	PRINT("%p", (void *)ULONG_MAX);
-	PRINT("%p", (void *)UINTPTR_MAX);
-
 	diag("signed int #############################");
-	PRINT("%d", 42);
-	PRINT("%d", -42);
-	PRINT("%d", 0);
-	PRINT("%d", INT_MIN);
-	PRINT("%d", INT_MAX);
+	PRINT("%-10.5d", 42);
+	PRINT("%-10.5d", -42);
+	PRINT("%-10.5d", 0);
+	PRINT("%-20.15d", INT_MIN);
+	PRINT("%-20.15d", INT_MAX);
+
+	PRINT("%-.1d", 42);
+	PRINT("%-.1d", -42);
+	PRINT("%-.1d", 0);
+	PRINT("%-.1d", INT_MIN);
+	PRINT("%-.1d", INT_MAX);
+
+	PRINT("%-.0d", 42);
+	PRINT("%-.0d", -42);
+	PRINT("%-.0d", 0);
+	PRINT("%-.0d", INT_MIN);
+	PRINT("%-.0d", INT_MAX);
 
 	diag("unsigned int ###########################");
-	PRINT("%u", 42);
-	PRINT("%u", -42);
-	PRINT("%u", 0);
-	PRINT("%u", UINT_MAX);
+	PRINT("%-10.5u", 42);
+	PRINT("%-10.5u", -42);
+	PRINT("%-10.5u", 0);
+	PRINT("%-20.15u", UINT_MAX);
+
+	PRINT("%-.1u", 42);
+	PRINT("%-.1u", -42);
+	PRINT("%-.1u", 0);
+	PRINT("%-.1u", UINT_MAX);
+
+	PRINT("%-.0u", 42);
+	PRINT("%-.0u", -42);
+	PRINT("%-.0u", 0);
+	PRINT("%-.0u", UINT_MAX);
 
 	diag("hexadecimal ############################");
-	PRINT("%x", 42);
-	PRINT("%x", -42);
-	PRINT("%x", 0);
-	PRINT("%x", UINT_MAX);
+	PRINT("%-10.5x", 42);
+	PRINT("%-10.5x", -42);
+	PRINT("%-10.5x", 0);
+	PRINT("%-20.15u", UINT_MAX);
 
-	PRINT("%X", 42);
-	PRINT("%X", -42);
-	PRINT("%X", 0);
-	PRINT("%X", UINT_MAX);
+	PRINT("%-.1x", 42);
+	PRINT("%-.1x", -42);
+	PRINT("%-.1x", 0);
+	PRINT("%-.1x", UINT_MAX);
+
+	PRINT("%-.0x", 42);
+	PRINT("%-.0x", -42);
+	PRINT("%-.0x", 0);
+	PRINT("%-.0x", UINT_MAX);
 
 	// teardown
 	dup2(saved, 1);
