@@ -6,15 +6,17 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 23:03:32 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/13 06:11:08 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include "parse.h"
-#include "append.h"
-#include "libft.h"
 #include <errno.h>
+
+#include "ft_printf.h"
+#include "libft.h"
+#include "append.h"
+#include "buffer.h"
+#include "parse.h"
 
 static const t_funptr	g_tab[256] = {
 ['%'] = append_char,
@@ -41,21 +43,17 @@ static void	init_format(t_format *f)
 	f->precision = -1;
 }
 
-static void	handle_fmt(const char **fmt, t_buffer *buf, t_format *f, va_list ap)
+static void	parse_format(const char **fmt, t_format *f)
 {
 	init_format(f);
-	f->invalid |= (**fmt == '\0');
 	parse_flags(fmt, f);
 	parse_width(fmt, f);
 	parse_precision(fmt, f);
 	f->specifier = **fmt;
 	f->invalid |= (!g_tab[f->specifier]);
+	check_format(f);
 	if (f->invalid)
-	{
 		errno = EINVAL;
-		return ;
-	}
-	g_tab[f->specifier](buf, f, ap);
 }
 
 int	ft_vdprintf(int fd, const char *fmt, va_list ap)
@@ -64,24 +62,23 @@ int	ft_vdprintf(int fd, const char *fmt, va_list ap)
 	t_format	f;
 
 	init_buffer(fd, &buf);
-	while (*fmt)
+	while (*fmt && !buf.error)
 	{
 		if (*fmt == '%')
 		{
 			++fmt;
-			handle_fmt(&fmt, &buf, &f, ap);
+			parse_format(&fmt, &f);
 			if (f.invalid)
 				return (-1);
+			g_tab[f.specifier](&buf, &f, ap);
 		}
 		else
 		{
-			append(&buf, fmt, 1);
-			if (buf.error)
-				return (-1);
+			buf_cpy(&buf, fmt, 1);
 		}
 		++fmt;
 	}
-	flush(&buf);
+	buf_flush(&buf);
 	if (buf.error)
 		return (-1);
 	return (buf.cnt);

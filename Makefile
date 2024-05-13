@@ -6,14 +6,15 @@ LDLIBS = -ltap -lftprintf
 
 # Main sources
 MAIN_DIR = ./src/
-MAIN_FILES = ft_printf.c ft_vdprintf.c append.c append_extras.c parse.c
+MAIN_FILES += ft_printf.c ft_vdprintf.c parse.c
+MAIN_FILES += buffer.c append.c append_extras.c
 MAIN_INC_FILES = append.h parse.h
 MAIN_SRCS = $(addprefix $(MAIN_DIR),$(MAIN_FILES))
 MAIN_INC_SRCS = $(addprefix $(MAIN_DIR),$(MAIN_INC_FILES))
 
 # Library sources
 LIBFT_DIR = ./libft/
-LIBFT_FILES += ft_strlen.c ft_isdigit.c ft_memset.c
+LIBFT_FILES += ft_strlen.c ft_strnlen.c ft_isdigit.c ft_memset.c
 LIBFT_FILES += ft_u64toa.c ft_u64toa_hex.c ft_i64toa_abs.c
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
 

@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 23:54:52 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/10 23:58:26 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:01:46 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,19 @@ int	main(void)
 	PRINT("%-.0x", -42);
 	PRINT("%-.0x", 0);
 	PRINT("%-.0x", UINT_MAX);
+
+	diag("string #################################");
+	PRINT("%-s", "hello!");
+	PRINT("%-s", (char *)NULL);
+
+	PRINT("%-.0s", "hello!");
+	PRINT("%-.0s", (char *)NULL);
+
+	PRINT("%-10.5s", "hello!");
+	PRINT("%-10.5s", (char *)NULL);
+
+	PRINT("%-10.0s", "hello!");
+	PRINT("%-10.0s", (char *)NULL);
 
 	// teardown
 	dup2(saved, 1);

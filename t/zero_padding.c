@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 07:22:26 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/11 07:23:42 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/11 20:21:18 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,55 +47,70 @@ int	main(void)
 	dup2(pipefd[1], STDOUT_FILENO);
 
 	diag("signed int #############################");
-	PRINT("%010.5d", 42);
-	PRINT("%010.5d", -42);
-	PRINT("%010.5d", 0);
-	PRINT("%020.15d", INT_MIN);
-	PRINT("%020.15d", INT_MAX);
+	PRINT("%05d", 42);
+	PRINT("%05d", -42);
+	PRINT("%05d", 0);
+	PRINT("%015d", INT_MIN);
+	PRINT("%015d", INT_MAX);
 
-	PRINT("%0.1d", 42);
-	PRINT("%0.1d", -42);
-	PRINT("%0.1d", 0);
-	PRINT("%0.1d", INT_MIN);
-	PRINT("%0.1d", INT_MAX);
+	PRINT("%01d", 42);
+	PRINT("%01d", -42);
+	PRINT("%01d", 0);
+	PRINT("%01d", INT_MIN);
+	PRINT("%01d", INT_MAX);
 
-	PRINT("%0.0d", 42);
-	PRINT("%0.0d", -42);
-	PRINT("%0.0d", 0);
-	PRINT("%0.0d", INT_MIN);
-	PRINT("%0.0d", INT_MAX);
+	PRINT("%05.0d", 42);
+	PRINT("%05.0d", -42);
+	PRINT("%05.0d", 0);
+	PRINT("%015.0d", INT_MIN);
+	PRINT("%015.0d", INT_MAX);
 
 	diag("unsigned int ###########################");
-	PRINT("%010.5u", 42);
-	PRINT("%010.5u", -42);
-	PRINT("%010.5u", 0);
-	PRINT("%020.15u", UINT_MAX);
+	PRINT("%05u", 42);
+	PRINT("%05u", -42);
+	PRINT("%05u", 0);
+	PRINT("%015u", UINT_MAX);
 
-	PRINT("%0.1u", 42);
-	PRINT("%0.1u", -42);
-	PRINT("%0.1u", 0);
-	PRINT("%0.1u", UINT_MAX);
+	PRINT("%01u", 42);
+	PRINT("%01u", -42);
+	PRINT("%01u", 0);
+	PRINT("%01u", UINT_MAX);
 
-	PRINT("%0.0u", 42);
-	PRINT("%0.0u", -42);
-	PRINT("%0.0u", 0);
-	PRINT("%0.0u", UINT_MAX);
+	PRINT("%05.0u", 42);
+	PRINT("%05.0u", -42);
+	PRINT("%05.0u", 0);
+	PRINT("%015.0u", UINT_MAX);
 
 	diag("hexadecimal ############################");
-	PRINT("%010.5x", 42);
-	PRINT("%010.5x", -42);
-	PRINT("%010.5x", 0);
-	PRINT("%020.15u", UINT_MAX);
+	PRINT("%05x", 42);
+	PRINT("%015x", -42);
+	PRINT("%05x", 0);
+	PRINT("%015x", UINT_MAX);
 
-	PRINT("%0.1x", 42);
-	PRINT("%0.1x", -42);
-	PRINT("%0.1x", 0);
-	PRINT("%0.1x", UINT_MAX);
+	PRINT("%#05x", 42);
+	PRINT("%#015x", -42);
+	PRINT("%#05x", 0);
+	PRINT("%#015x", UINT_MAX);
 
-	PRINT("%0.0x", 42);
-	PRINT("%0.0x", -42);
-	PRINT("%0.0x", 0);
-	PRINT("%0.0x", UINT_MAX);
+	PRINT("%01x", 42);
+	PRINT("%01x", -42);
+	PRINT("%01x", 0);
+	PRINT("%01x", UINT_MAX);
+
+	PRINT("%#01x", 42);
+	PRINT("%#01x", -42);
+	PRINT("%#01x", 0);
+	PRINT("%#01x", UINT_MAX);
+
+	PRINT("%05.0x", 42);
+	PRINT("%015.0x", -42);
+	PRINT("%05.0x", 0);
+	PRINT("%015.0x", UINT_MAX);
+
+	PRINT("%#05.5x", 42);
+	PRINT("%#015.0x", -42);
+	PRINT("%#05.0x", 0);
+	PRINT("%#015.0x", UINT_MAX);
 
 	// teardown
 	dup2(saved, 1);

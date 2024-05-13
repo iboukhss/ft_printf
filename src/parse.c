@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 19:49:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 14:43:25 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/11 18:23:30 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,30 @@ void	parse_precision(const char **fmt, t_format *f)
 			f->precision = f->precision * 10 + (**fmt - '0');
 			(*fmt)++;
 		}
+	}
+}
+
+void	check_format(t_format *f)
+{
+	unsigned char	s;
+
+	if (f->invalid)
+		return ;
+	s = f->specifier;
+	if (f->alt_form)
+	{
+		f->invalid |= (s != 'x' && s != 'X');
+	}
+	if (f->zero_pad)
+	{
+		f->invalid |= (s == '%' || s == 'c' || s == 's' || s == 'p');
+	}
+	if (f->hide_pos || f->show_pos)
+	{
+		f->invalid |= (s != 'd' && s != 'i');
+	}
+	if (f->precision >= 0)
+	{
+		f->invalid |= (s == '%' || s == 'c' || s == 'p');
 	}
 }

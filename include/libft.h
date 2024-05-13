@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 05:22:29 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/11 00:27:02 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/11 21:33:26 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define UHEX	0x58
 
 size_t	ft_strlen(const char *str);
+size_t	ft_strnlen(const char *str, size_t n);
 int		ft_isdigit(int c);
 
 int		ft_u64toa(uint64_t val, char *buf, size_t size);

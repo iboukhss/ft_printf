@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strnlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/04 04:20:57 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/11 21:27:18 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/11 21:17:01 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/11 21:25:00 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strnlen(const char *str, size_t n)
 {
 	size_t	len;
 
 	len = 0;
-	while (*str)
+	while (*str && len < n)
 	{
 		++str;
 		++len;

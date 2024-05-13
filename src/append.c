@@ -6,81 +6,103 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:41:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/08 23:06:19 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/13 07:02:39 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "append.h"
 #include "libft.h"
+#include "append.h"
+#include "buffer.h"
+#include <stdint.h>
 
-void	append(t_buffer *buf, const void *src, size_t n)
+size_t	count_padding(t_format *f, int len, int offset)
 {
-	const char	*s;
-
-	s = src;
-	while (n)
-	{
-		if (buf->error)
-			return ;
-		while (n && buf->len < buf->cap)
-		{
-			buf->data[buf->len++] = *s++;
-			++buf->cnt;
-			--n;
-		}
-		if (n)
-		{
-			flush(buf);
-		}
-	}
+	// TODO: refactor append_pad
 }
 
-void	fill(t_buffer *buf, int c, size_t n)
+int	append_prefix(t_buffer *buf, t_format *f, int len, const char *prefix)
 {
-	while (n)
-	{
-		if (buf->error)
-			return ;
-		while (n && buf->len < buf->cap)
-		{
-			buf->data[buf->len++] = c;
-			++buf->cnt;
-			--n;
-		}
-		if (n)
-		{
-			flush(buf);
-		}
-	}
-}
+	int	pre;
+	int	wid;
+	int	offset;
 
-void	flush(t_buffer *buf)
-{
-	buf->error |= (write(buf->fd, buf->data, buf->len) == -1);
-	if (buf->error)
-		return ;
-	buf->len = 0;
+	pre = 0;
+	wid = 0;
+	offset = ft_strlen(prefix);
+	if (len && f->precision > len)
+		pre = f->precision - len;
+	if (f->width > len + pre + offset)
+		wid = f->width - (len + pre + offset);
+	if (f->left_adj)
+	{
+		buf_cpy(buf, prefix, offset);
+		buf_set(buf, '0', pre);
+		return (wid);
+	}
+	else if (f->zero_pad && f->precision == -1)
+	{
+		buf_cpy(buf, prefix, offset);
+		buf_set(buf, '0', wid);
+	}
+	else
+	{
+		buf_set(buf, ' ', wid);
+		buf_cpy(buf, prefix, offset);
+		buf_set(buf, '0', pre);
+	}
+	return (0);
 }
 
 void	append_char(t_buffer *buf, t_format *f, va_list ap)
 {
-	int	c;
+	int				pad;
+	unsigned char	c;
 
 	if (f->specifier == '%')
-		return (append(buf, "%", 1));
-	c = va_arg(ap, int);
-	append(buf, &c, 1);
+		c = '%';
+	else
+		c = (unsigned char)va_arg(ap, int);
+	pad = append_prefix(buf, f, 1, "\0");
+	buf_cpy(buf, &c, 1);
+	buf_set(buf, ' ', pad);
 }
 
 void	append_str(t_buffer *buf, t_format *f, va_list ap)
 {
+	int		len;
+	int		pad;
 	char	*s;
-	size_t	i;
 
-	(void)f;
 	s = va_arg(ap, char *);
 	if (!s)
-		return (append(buf, "(null)", 6));
-	i = ft_strlen(s);
-	append(buf, s, i);
+	{
+		s = "(null)";
+		len = ft_strlen(s);
+	}
+	else if (f->precision >= 0)
+		len = ft_strnlen(s, f->precision);
+	else
+		len = ft_strlen(s);
+	pad = append_prefix(buf, f, len, "\0");
+	buf_cpy(buf, s, len);
+	buf_set(buf, ' ', pad);
+}
+
+void	append_ptr(t_buffer *buf, t_format *f, va_list ap)
+{
+	char		tmp[64];
+	int			len;
+	int			pad;
+	uintptr_t	p;
+
+	p = (uintptr_t)va_arg(ap, void *);
+	if (!p)
+		pad = append_prefix(buf, f, 0, "(nil)");
+	else
+	{
+		len = ft_u64toa_hex(p, tmp, sizeof(tmp), f->specifier & 32);
+		pad = append_prefix(buf, f, len, "0x");
+		buf_cpy(buf, tmp, len);
+	}
+	buf_set(buf, ' ', pad);
 }
