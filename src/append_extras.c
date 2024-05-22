@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:47:39 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/22 16:05:58 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/23 00:42:26 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,18 @@ void	append_int(t_buffer *buf, t_format *f, va_list ap)
 void	append_uint(t_buffer *buf, t_format *f, va_list ap)
 {
 	char			tmp[21];
-	t_print			pri;
+	t_print			p;
 	unsigned int	u;
 
-	ft_memset(&pri, 0, sizeof(pri));
+	ft_memset(&p, 0, sizeof(p));
 	u = va_arg(ap, unsigned int);
 	if (!u && !f->precision)
-		pri.slen = 0;
+		p.slen = 0;
 	else
-		pri.slen = ft_u64toa(tmp, u, sizeof(tmp));
-	pri.str = tmp;
-	get_padding(&pri, f);
-	append_pri(buf, &pri);
+		p.slen = ft_u64toa(tmp, u, sizeof(tmp));
+	p.str = tmp;
+	get_padding(&p, f);
+	append_pri(buf, &p);
 }
 
 /* Buffer size for UINT64_MAX (0xffffffffffffffff) 16 bytes + null */
