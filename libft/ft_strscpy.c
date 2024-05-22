@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_u64toa_hex.c                                    :+:      :+:    :+:   */
+/*   ft_strscpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 20:23:32 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/22 21:36:37 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/20 14:30:56 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/22 21:38:01 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,20 @@
 
 #include <errno.h>
 
-static size_t	count_digits_hex(uint64_t v)
+ssize_t	ft_strscpy(char *dst, const char *src, size_t size)
 {
 	size_t	cnt;
 
-	if (!v)
-		return (1);
+	if (!size)
+		return (-E2BIG);
 	cnt = 0;
-	while (v)
+	while (*src && cnt < size - 1)
 	{
-		v /= 16;
+		*dst++ = *src++;
 		++cnt;
 	}
-	return (cnt);
-}
-
-int	ft_u64toa_hex(char *buf, uint64_t val, size_t size)
-{
-	size_t	len;
-	size_t	i;
-
-	len = count_digits_hex(val);
-	if (len > size - 1)
+	*dst = '\0';
+	if (*src)
 		return (-E2BIG);
-	i = len;
-	buf[i] = '\0';
-	while (i)
-	{
-		buf[--i] = "0123456789abcdef"[val % 16];
-		val /= 16;
-	}
-	return (len);
+	return (cnt);
 }

@@ -6,18 +6,20 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:48:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/13 06:11:08 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/22 18:30:06 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
-
-#include "ft_printf.h"
-#include "libft.h"
 #include "append.h"
 #include "buffer.h"
 #include "parse.h"
 
+#include "ft_printf.h"
+#include "libft.h"
+
+#include <errno.h>
+
+/* Lookup table of function pointers for each format specifier */
 static const t_funptr	g_tab[256] = {
 ['%'] = append_char,
 ['c'] = append_char,

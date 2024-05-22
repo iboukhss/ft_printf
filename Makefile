@@ -1,77 +1,67 @@
 NAME = libftprintf.a
 CC = clang
-CFLAGS = -Wall -Wextra -g -MMD
+CFLAGS := -Wall -Wextra
+#CFLAGS += -g3 -MMD -fsanitize=address,undefined
 LDFLAGS = -L.
 LDLIBS = -ltap -lftprintf
 
+vpath %.c src libft t
+vpath %.h src include
+
 # Main sources
-MAIN_DIR = ./src/
-MAIN_FILES += ft_printf.c ft_vdprintf.c parse.c
-MAIN_FILES += buffer.c append.c append_extras.c
-MAIN_INC_FILES = append.h parse.h
-MAIN_SRCS = $(addprefix $(MAIN_DIR),$(MAIN_FILES))
-MAIN_INC_SRCS = $(addprefix $(MAIN_DIR),$(MAIN_INC_FILES))
+SRCS := ft_printf.c ft_vdprintf.c parse.c
+SRCS += buffer.c append.c append_extras.c
+INCS := ft_printf.h append.h parse.h buffer.h
 
 # Library sources
-LIBFT_DIR = ./libft/
-LIBFT_FILES += ft_strlen.c ft_strnlen.c ft_isdigit.c ft_memset.c
-LIBFT_FILES += ft_u64toa.c ft_u64toa_hex.c ft_i64toa_abs.c
-LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
+SRCS += ft_strlen.c ft_strnlen.c ft_strscpy.c ft_memset.c
+SRCS += ft_isdigit.c ft_islower.c ft_toupper.c ft_strupr.c
+SRCS += ft_u64toa.c ft_u64toa_hex.c ft_i64toa_abs.c
+INCS += libft.h
 
-# Headers
-INC_DIR = ./include/
-INC_FILES = ft_printf.h libft.h
-INC_SRCS = $(addprefix $(INC_DIR),$(INC_FILES))
-
-# Target sources
-SRCS = $(MAIN_SRCS) $(LIBFT_SRCS)
-INCS = $(MAIN_INC_SRCS) $(INC_SRCS)
+# Build deps
 OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
 
 # Test sources
-TEST_DIR = ./t/
-TEST_FILES += specifiers.c prefixes.c precision.c width.c
-TEST_FILES += width_and_precision.c mixed_flags.c align.c zero_padding.c
-TEST_SRCS = $(addprefix $(TEST_DIR),$(TEST_FILES))
+TEST_SRCS := specifiers.c prefixes.c precision.c width.c
+TEST_SRCS += width_and_precision.c mixed_flags.c align.c zero_padding.c
 TEST_EXES = $(TEST_SRCS:.c=.t)
 
+# Pattern rules
+%.o: %.c
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+
+%.t: %.c libtap.a libftprintf.a
+	$(CC) $(CFLAGS) -Iinclude $< $(LDFLAGS) $(LDLIBS) -o $@
+
+# Target rules
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar -rcs $@ $^
-
-%.o: %.c
-	$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
+	ar rcs $@ $^
 
 bonus: all
 
-norm:
-	-norminette $(SRCS) $(INCS)
-
-# Testing
 tests: $(TEST_EXES)
 
-%.t: %.c libtap.a libftprintf.a
-	$(CC) $(CFLAGS) -I$(INC_DIR) $< $(LDFLAGS) $(LDLIBS) -o $@
+libtap.a: tap.o
+	ar rcs $@ $<
 
-libtap.a: t/tap.o
-	ar -rcs $@ $<
+run: $(TEST_EXES)
+	prove $^
 
-tap.o: t/tap.c
-	$(CC) $(CFLAGS) -c $< -o $@
+norm: $(SRCS) $(INCS)
+	-norminette $^
 
 clean:
-	rm -f src/*.o src/*.d
-	rm -f t/*o t/*.d
+	rm -f *.o *.d
 
 fclean: clean
-	rm -f *.a
-	rm -f t/*.t
+	rm -f *.a *.t
 
 re: fclean all
 
-# Dependencies
 -include $(DEPS)
 
-.PHONY: all bonus norm tests clean fclean re
+.PHONY: all bonus norm tests run clean fclean re

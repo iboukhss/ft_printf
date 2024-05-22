@@ -1,48 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_u64toa_hex.c                                    :+:      :+:    :+:   */
+/*   ft_strupr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 20:23:32 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/22 21:36:37 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/21 15:17:57 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/22 20:46:35 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-#include <errno.h>
-
-static size_t	count_digits_hex(uint64_t v)
+char	*ft_strupr(char *str)
 {
-	size_t	cnt;
+	char	*s;
 
-	if (!v)
-		return (1);
-	cnt = 0;
-	while (v)
+	s = str;
+	while (*s)
 	{
-		v /= 16;
-		++cnt;
+		*s = ft_toupper(*s);
+		++s;
 	}
-	return (cnt);
-}
-
-int	ft_u64toa_hex(char *buf, uint64_t val, size_t size)
-{
-	size_t	len;
-	size_t	i;
-
-	len = count_digits_hex(val);
-	if (len > size - 1)
-		return (-E2BIG);
-	i = len;
-	buf[i] = '\0';
-	while (i)
-	{
-		buf[--i] = "0123456789abcdef"[val % 16];
-		val /= 16;
-	}
-	return (len);
+	return (str);
 }

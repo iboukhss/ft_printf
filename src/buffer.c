@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 17:01:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/13 06:11:08 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:23:33 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	buf_cpy(t_buffer *buf, const void *src, size_t n)
 {
 	const char	*s;
 
+	if (!src)
+		return ;
 	s = src;
 	while (n)
 	{

@@ -5,29 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/10 19:52:51 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/10 19:54:34 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/05/20 20:31:23 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/05/22 21:36:21 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	count_digits(int64_t val)
-{
-	size_t	count;
+#include <errno.h>
 
-	count = 0;
-	if (val == 0)
+static size_t	count_digits(int64_t v)
+{
+	size_t	cnt;
+
+	if (!v)
 		return (1);
-	while (val)
+	cnt = 0;
+	while (v)
 	{
-		val /= 10;
-		++count;
+		v /= 10;
+		++cnt;
 	}
-	return (count);
+	return (cnt);
 }
 
-int	ft_i64toa_abs(int64_t val, char *buf, size_t size)
+int	ft_i64toa_abs(char *buf, int64_t val, size_t size)
 {
 	size_t	len;
 	size_t	i;
@@ -35,9 +37,10 @@ int	ft_i64toa_abs(int64_t val, char *buf, size_t size)
 	if (val > 0)
 		val = -val;
 	len = count_digits(val);
-	if (size < len)
-		return (-1);
+	if (len > size - 1)
+		return (-E2BIG);
 	i = len;
+	buf[i] = '\0';
 	while (i)
 	{
 		buf[--i] = '0' - (val % 10);

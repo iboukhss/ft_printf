@@ -6,18 +6,21 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 04:21:44 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/05 05:25:34 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/22 20:57:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memset(void *ptr, int c, size_t n)
+void	*ft_memset(void *dst, int c, size_t n)
 {
-	char	*p;
+	char	*d;
 
-	p = ptr;
-	while (n--)
-		*p++ = c;
-	return (ptr);
+	d = dst;
+	while (n)
+	{
+		*d++ = c;
+		--n;
+	}
+	return (dst);
 }

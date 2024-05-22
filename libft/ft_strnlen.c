@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 21:17:01 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/11 21:25:00 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:43:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 size_t	ft_strnlen(const char *str, size_t n)
 {
-	size_t	len;
+	const char	*s;
 
-	len = 0;
-	while (*str && len < n)
+	s = str;
+	while (*s && n)
 	{
-		++str;
-		++len;
+		++s;
+		--n;
 	}
-	return (len);
+	return (s - str);
 }
