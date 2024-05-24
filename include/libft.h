@@ -6,7 +6,7 @@
 /*   By: iboukhss <iboukhss@student.42luxe...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 05:22:29 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/05/23 00:42:04 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:09:52 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	*ft_memset(void *dst, int c, size_t n);
 
 int		ft_isdigit(int c);
 int		ft_islower(int c);
-int		ft_isupper(int c);
 int		ft_toupper(int c);
 
 char	*ft_strupr(char *str);
