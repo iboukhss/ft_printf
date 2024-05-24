@@ -1,11 +1,11 @@
 NAME = libftprintf.a
-CC = clang
-CFLAGS := -Wall -Wextra
+CC = cc
+CFLAGS := -Wall -Wextra -Werror -Iinclude
 #CFLAGS += -g3 -MMD -fsanitize=address,undefined
-LDFLAGS = -L.
-LDLIBS = -ltap -lftprintf
+#LDFLAGS = -L.
+#LDLIBS = -ltap -lftprintf
 
-vpath %.c src libft t
+vpath %.c src libft
 vpath %.h src include
 
 # Main sources
@@ -24,16 +24,16 @@ OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
 
 # Test sources
-TEST_SRCS := specifiers.c prefixes.c precision.c width.c
-TEST_SRCS += width_and_precision.c mixed_flags.c align.c zero_padding.c
-TEST_EXES = $(TEST_SRCS:.c=.t)
+#TEST_SRCS := specifiers.c prefixes.c precision.c width.c
+#TEST_SRCS += width_and_precision.c mixed_flags.c align.c zero_padding.c
+#TEST_EXES = $(TEST_SRCS:.c=.t)
 
 # Pattern rules
 %.o: %.c
-	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-%.t: %.c libtap.a libftprintf.a
-	$(CC) $(CFLAGS) -Iinclude $< $(LDFLAGS) $(LDLIBS) -o $@
+#%.t: %.c libtap.a libftprintf.a
+#	$(CC) $(CFLAGS) $< $(LDFLAGS) $(LDLIBS) -o $@
 
 # Target rules
 all: $(NAME)
@@ -43,16 +43,16 @@ $(NAME): $(OBJS)
 
 bonus: all
 
-tests: $(TEST_EXES)
+#tests: $(TEST_EXES)
 
-libtap.a: tap.o
-	ar rcs $@ $<
+#libtap.a: tap.o
+#	ar rcs $@ $<
 
-run: $(TEST_EXES)
-	prove $^
+#run: $(TEST_EXES)
+#	prove $^
 
-norm: $(SRCS) $(INCS)
-	-norminette $^
+#norm: $(SRCS) $(INCS)
+#	-norminette $^
 
 clean:
 	rm -f *.o *.d
